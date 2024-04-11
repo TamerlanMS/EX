@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+<h1>Мой профиль</h1>
+<p>Привет, {{ user.username }}!</p>
+
+<h2>Ваши объявления</h2>
+<ul>
+    {% for ad in user.ad_set.all %}
+    <li>
+        <a href="{% url 'ad_detail' ad.pk %}">{{ ad.title }}</a><br>
+        {% if ad.image %}
+        <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="300" height="200">
+        {% endif %}
+        <p>Дата создания: {{ ad.created_at }}</p>
+    </li>
+    {% empty %}
+    <li>У вас пока нет объявлений.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

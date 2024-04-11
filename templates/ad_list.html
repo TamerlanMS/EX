@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Список объявлений{% endblock %}
+
+{% block content %}
+
+<h2>Список объявлений</h2>
+<ul>
+    {% for ad in ads %}
+    <li>
+        <h3><a href="{% url 'ad_detail' ad.pk %}">{{ ad.title }}</a></h3><br>
+        {% if ad.image %}
+        <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="500" height="400">
+        {% endif %}
+        <p>Дата создания: {{ ad.created_at }}</p> 
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

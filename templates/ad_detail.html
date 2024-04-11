@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ ad.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <h1>{{ ad.title }}</h1>
+    <p><strong>Автор объявления: <a href="{% url 'profile' ad.author.pk %}">{{ ad.author.username }}</a></strong></p> <!-- Сделали имя пользователя кликабельным -->
+    <p><strong>Дата создания объявления: {{ ad.created_at }}</strong></p>
+    
+    {% if ad.image %}
+    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="500" height="400">
+    {% endif %}
+    <p>{{ ad.description }}</p>
+</article>
+
+{% if user.is_authenticated and ad.author == user %}
+    <form method="get" action="{% url 'ad_update' ad.id %}">
+        {% csrf_token %}
+        <button type="submit">Редактировать объявление</button>
+    </form>
+{% endif %}
+
+<h2>Комментарии:</h2>
+<ul>
+    {% for comment in ad.comments.all %}
+    <li>
+        <p><strong><a href="{% url 'profile' comment.author.pk %}">{{ comment.author.username }}</a></strong></p>
+        <p>{{ comment.text }}</p>
+        <p>оставлен: {{ comment.created_at }}</p>
+        {% if user.is_authenticated and comment.author == user %}
+            <form method="get" action="{% url 'comment_update' comment.id %}">
+                {% csrf_token %}
+                <button type="submit">Редактировать</button>
+            </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if not user.is_authenticated %}
+<p>Чтобы оставить комментарий, пожалуйста, <a href="{% url 'login' %}">войдите</a> или <a href="{% url 'signup' %}">зарегистрируйтесь</a>.</p>
+{% else %}
+<form method="post" action="{% url 'comment_create' ad.pk %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Комментировать</button>
+</form>
+{% endif %}
+{% endblock %}

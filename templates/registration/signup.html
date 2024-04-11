@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Регистрация</div>
+                    <div class="panel-body">
+                        {% if form.errors %}
+                            <p class="bg-danger p-d ml-b">{{ form.errors }}</p>
+                        {% endif %}
+                       
+                        <div class="form-group clearfix">
+                            <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right">Имя<span class="text-red">*</span>:</label>
+                            <div class="col-md-6">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.email.id_for_label }}" class="col-md-4 control-label text-right">Почта<span class="text-red">*</span>:</label>
+                            <div class="col-md-6">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.password1.id_for_label }}" class="col-md-4 control-label text-right">Пароль<span class="text-red">*</span>:</label>
+                            <div class="col-md-6">
+                                {{ form.password1 }}
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.password2.id_for_label }}" class="col-md-4 control-label text-right">Подтвердите пароль:</label>
+                            <div class="col-md-6">
+                                {{ form.password2 }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-md-offset-4">
+                            <input type="submit" value="Зарагестрироваться" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
